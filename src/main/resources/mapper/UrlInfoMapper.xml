@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xunmall.flink.spring.repository.UrlInfoRepository">
+    <resultMap id="BaseResultMap" type="com.xunmall.flink.spring.bean.UrlInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="hash" property="hash" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,
+        `url`,
+        `hash`
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from url_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUrl" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from url_info
+        where url = #{url,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from url_info
+    </select>
+
+    <insert id="insert" parameterType="com.xunmall.flink.spring.bean.UrlInfo">
+        insert into url_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                `url`,
+            </if>
+            <if test="hash != null">
+                `hash`
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="hash != null">
+                #{hash,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+</mapper>
